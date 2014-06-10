@@ -1,5 +1,6 @@
 package com.octo.android.robospice.request;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -46,6 +47,7 @@ public class RequestProcessorTest extends AndroidTestCase {
     private static final String TEST_RETURNED_DATA = "coucou";
     private static final String TEST_RETURNED_DATA2 = "toto";
     private static final long REQUEST_COMPLETION_TIME_OUT = 2000;
+    private static final long REQUEST_COMPLETION_TIME_OUT_LARGE = 10000;
     private static final long WAIT_BEFORE_REQUEST_EXECUTION = 200;
     private static final float TEST_RETRY_BACKOFF_MULTIPLIER = 1.0f;
     private static final long TEST_DELAY_BEFORE_RETRY = WAIT_BEFORE_REQUEST_EXECUTION;
@@ -90,6 +92,50 @@ public class RequestProcessorTest extends AndroidTestCase {
     protected void tearDown() throws Exception {
         requestProcessorUnderTest.shouldStop();
         super.tearDown();
+    }
+
+    @SuppressWarnings("rawtypes")
+    public void testAddRequestsFromManyThreads() throws Exception {
+        final ArrayList<RequestListenerStub> listeners = new ArrayList<RequestListenerStub>();
+        final ArrayList<Thread> threads = new ArrayList<Thread>();
+        final int threadCount = 50;
+        EasyMock.expect(mockCacheManager.loadDataFromCache(EasyMock.eq(TEST_CLASS), EasyMock.eq(TEST_CACHE_KEY), EasyMock.eq(TEST_DURATION))).andReturn(TEST_RETURNED_DATA);
+        EasyMock.expectLastCall().atLeastOnce();
+        EasyMock.replay(mockCacheManager);
+        
+        for (int i = 0; i < threadCount; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CachedSpiceRequestStub<String> stubRequest = createSuccessfulRequest(TEST_CLASS, TEST_CACHE_KEY, TEST_DURATION, TEST_RETURNED_DATA);
+                    RequestListenerStub<String> mockRequestListener = new RequestListenerStub<String>();
+                    synchronized (listeners) {
+                        listeners.add(mockRequestListener);
+                    }
+                    Set<RequestListener<?>> requestListenerSet = new HashSet<RequestListener<?>>();
+                    requestListenerSet.add(mockRequestListener);
+                    requestProcessorUnderTest.addRequest(stubRequest, requestListenerSet);
+                }
+            });
+            thread.start();
+            threads.add(thread);
+        }
+        //wait for all threads to have added their requests and listeners
+        for (Thread thread : threads) {
+            thread.join(REQUEST_COMPLETION_TIME_OUT_LARGE);
+        }
+        
+        int listenersCalledCount = 0;
+        for (RequestListenerStub listener : listeners) {
+            //wait for all listeners to have been invoked
+            listener.await(REQUEST_COMPLETION_TIME_OUT_LARGE);
+            if (listener.isSuccessful() != null) {
+                listenersCalledCount++;
+            }
+        }
+        EasyMock.verify(mockCacheManager);
+        assertEquals(threadCount, listeners.size());
+        assertEquals(threadCount, listenersCalledCount);
     }
 
     // ============================================================================================
@@ -1162,7 +1208,7 @@ public class RequestProcessorTest extends AndroidTestCase {
         requestListenerSet.add(mockRequestListener);
 
         EasyMock.expect(mockCacheManager.loadDataFromCache(EasyMock.eq(TEST_CLASS), EasyMock.eq(TEST_CACHE_KEY), EasyMock.eq(TEST_DURATION))).andReturn(null);
-        EasyMock.expectLastCall().anyTimes();
+        EasyMock.expectLastCall().times(1);
         EasyMock.replay(mockCacheManager);
 
         // when
@@ -1174,7 +1220,7 @@ public class RequestProcessorTest extends AndroidTestCase {
 
         // then
         assertNotNull(stubRequest.getRetryPolicy());
-        assertEquals(0, stubRequest.getRetryPolicy().getRetryCount());
+        assertEquals(TEST_RETRY_COUNT, stubRequest.getRetryPolicy().getRetryCount());
         EasyMock.verify(mockCacheManager);
         assertFalse(stubRequest.isLoadDataFromNetworkCalled());
         assertTrue(mockRequestListener.isExecutedInUIThread());

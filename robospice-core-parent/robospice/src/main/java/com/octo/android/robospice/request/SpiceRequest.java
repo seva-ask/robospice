@@ -48,8 +48,10 @@ public abstract class SpiceRequest<RESULT> implements Comparable<SpiceRequest<RE
 
     /**
      * Set a {@link RetryPolicy} that will be responsible to coordinate retry
-     * attempts by the RequestProcessor. Can be null (no retry).
-     * @param retryPolicy
+     * attempts by the RequestProcessor. Can be null (no retry). Retry policy only
+     * applies when network is on. If network is down, requests are "tried" only once.
+     * @param retryPolicy the new retry policy
+     * @see {@link com.octo.android.robospice.networkstate.NetworkStateChecker.NetworkStateChecker}
      */
     public void setRetryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;

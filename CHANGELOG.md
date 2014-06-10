@@ -4,16 +4,29 @@ Release notes for RoboSpice
 Version 1.5.0 (planned)
 -------------
 
-* TODO : finish migrating samples to gralde and release.
+* TODO : finish migrating samples to gradle and release.
 * TODO : inject requests in listeners
 * TODO : inject service in requests
 
-Version 1.4.12 (planned Feb 2014)
+Version 1.4.13 (Planned June 2014)
 --------------
 
 Enhancements
 
-* Updated Retrofit extension to use Retrofit version 1.5.0
+* Requests are not retried anymore when network is down. https://github.com/stephanenicolas/robospice/pull/291. Thx to softwaremaverick for fixing this bug.
+* SpiceService's executor core threads can now be exceeded and customized and are disposable. Thx to Jorge Vila for this feature. https://github.com/stephanenicolas/robospice/pull/304
+
+Bug fixes
+
+* Fix a potential concurrent issue in the request processor : listeners could be lost when added simultanously. Thanks to seva-ask for this fix : https://github.com/stephanenicolas/robospice/pull/296
+* Fix a potential multiple unbindings in SpiceManager : https://github.com/stephanenicolas/robospice/pull/301. Thqnks to seva-ask
+
+Version 1.4.12 (April 17th 2014)
+--------------
+
+Enhancements
+
+* Updated Retrofit extension to use Retrofit version 1.5.1
 * Updated OkHttp extension to use OkHttp version 1.5.4
 * Updated Google Http Client extension to use Google Http Client version 1.18.0-rc
 

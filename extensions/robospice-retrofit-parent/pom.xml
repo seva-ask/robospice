@@ -10,7 +10,6 @@
 		<relativePath>../../</relativePath>
 	</parent>
 
-	<groupId>com.octo.android.robospice</groupId>
 	<artifactId>robospice-retrofit-parent</artifactId>
 	<packaging>pom</packaging>
 	<name>Robospice - Extension Retrofit Module Parent</name>
@@ -24,7 +23,7 @@
 	</modules>
 
 	<properties>
-		<retrofit.version>1.5.0</retrofit.version>
+		<retrofit.version>1.5.1</retrofit.version>
 	</properties>
 
 	<dependencyManagement>
