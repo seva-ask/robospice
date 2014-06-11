@@ -524,6 +524,31 @@ public class SpiceManagerTest extends AndroidTestCase {
         assertNull(requestListenerStub2.isSuccessful());
     }
 
+    public void test_shouldStop_doesnt_notify_listeners() throws InterruptedException {
+        spiceManager.start(getContext());
+
+        SpiceRequestSucceedingStub<String> spiceRequestStub = new SpiceRequestSucceedingStub<String>(TEST_CLASS, TEST_RETURNED_DATA, WAIT_BEFORE_EXECUTING_REQUEST_LARGE);
+        RequestListenerStub<String> requestListenerStub = new RequestListenerStub<String>();
+        spiceManager.execute(spiceRequestStub, TEST_CACHE_KEY, TEST_DURATION, requestListenerStub);
+
+        final int extraRequestsCount = 10;
+        for (int i = 0; i < extraRequestsCount; i++) {
+            SpiceRequestSucceedingStub<String> spiceRequestStub2 = new SpiceRequestSucceedingStub<String>(TEST_CLASS, TEST_RETURNED_DATA, WAIT_BEFORE_EXECUTING_REQUEST_LARGE);
+            RequestListenerStub<String> requestListenerStub2 = new RequestListenerStub<String>();
+            spiceManager.execute(spiceRequestStub2, Integer.toString(i), TEST_DURATION, requestListenerStub2);
+        }
+
+        // wait for only one request begins to be executed
+        spiceRequestStub.awaitForLoadDataFromNetworkIsCalled(WAIT_BEFORE_EXECUTING_REQUEST_LARGE);
+        // stop before
+        spiceManager.shouldStop();
+
+        requestListenerStub.await(WAIT_BEFORE_EXECUTING_REQUEST_LARGE);
+
+        // test
+        assertNull(requestListenerStub.isSuccessful());
+    }
+
     public void test_dontNotifyRequestListenersForRequest_stops_only_targeted_request() throws InterruptedException {
         // given
         spiceManager.start(getContext());
