@@ -237,7 +237,7 @@ public class SpiceManager implements Runnable {
         return mapPendingRequestToRequestListener.size();
     }
 
-    private synchronized Context getContextReference() {
+    private Context getContextReference() {
         return contextWeakReference.get();
     }
 
