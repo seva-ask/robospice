@@ -531,7 +531,8 @@ public class SpiceManagerTest extends AndroidTestCase {
         RequestListenerStub<String> requestListenerStub = new RequestListenerStub<String>();
         spiceManager.execute(spiceRequestStub, TEST_CACHE_KEY, TEST_DURATION, requestListenerStub);
 
-        for (int i = 0; i < 10; i++) {
+        final int extraRequestsCount = 10;
+        for (int i = 0; i < extraRequestsCount; i++) {
             SpiceRequestSucceedingStub<String> spiceRequestStub2 = new SpiceRequestSucceedingStub<String>(TEST_CLASS, TEST_RETURNED_DATA, WAIT_BEFORE_EXECUTING_REQUEST_LARGE);
             RequestListenerStub<String> requestListenerStub2 = new RequestListenerStub<String>();
             spiceManager.execute(spiceRequestStub2, Integer.toString(i), TEST_DURATION, requestListenerStub2);
