@@ -265,8 +265,6 @@ public class SpiceManager implements Runnable {
             }
         } catch (final InterruptedException e) {
             Ln.d(e, "Interrupted while waiting for acquiring service.");
-        } finally {
-            unbindFromService(contextWeakReference.get());
         }
     }
 
