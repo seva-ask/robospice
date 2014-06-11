@@ -246,7 +246,7 @@ public class SpiceManager implements Runnable {
             return;
         }
 
-        bindToService(contextWeakReference.get());
+        bindToService();
 
         try {
             waitForServiceToBeBound();
@@ -329,7 +329,7 @@ public class SpiceManager implements Runnable {
             long end = System.currentTimeMillis();
             Ln.d("Runner join time (ms) when should stop %d", end - start);
         }
-        unbindFromService(contextWeakReference.get());
+        unbindFromService();
         this.runner = null;
         this.executorService.shutdown();
         this.contextWeakReference.clear();
@@ -1164,7 +1164,8 @@ public class SpiceManager implements Runnable {
         return success;
     }
 
-    private void bindToService(final Context context) {
+    private void bindToService() {
+        Context context = contextWeakReference.get();
         if (context == null || requestQueue.isEmpty() && isStopped) {
             // fix issue 40. Thx Shussu
             // fix issue 246.
@@ -1197,7 +1198,8 @@ public class SpiceManager implements Runnable {
         }
     }
 
-    private void unbindFromService(final Context context) {
+    private void unbindFromService() {
+        Context context = contextWeakReference.get();
         if (context == null) {
             return;
         }
