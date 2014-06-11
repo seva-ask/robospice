@@ -237,6 +237,10 @@ public class SpiceManager implements Runnable {
         return mapPendingRequestToRequestListener.size();
     }
 
+    private synchronized Context getContextReference() {
+        return contextWeakReference.get();
+    }
+
     @Override
     public void run() {
 
@@ -1153,7 +1157,7 @@ public class SpiceManager implements Runnable {
         boolean success = false;
 
         // start the service it is not started yet.
-        Context context = contextWeakReference.get();
+        Context context = getContextReference();
         if (context != null) {
             checkServiceIsProperlyDeclaredInAndroidManifest(context);
             final Intent intent = new Intent(context, spiceServiceClass);
@@ -1165,7 +1169,7 @@ public class SpiceManager implements Runnable {
     }
 
     private void bindToService() {
-        Context context = contextWeakReference.get();
+        Context context = getContextReference();
         if (context == null || requestQueue.isEmpty() && isStopped) {
             // fix issue 40. Thx Shussu
             // fix issue 246.
@@ -1199,7 +1203,7 @@ public class SpiceManager implements Runnable {
     }
 
     private void unbindFromService() {
-        Context context = contextWeakReference.get();
+        Context context = getContextReference();
         if (context == null) {
             return;
         }
