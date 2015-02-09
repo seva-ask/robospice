@@ -143,7 +143,7 @@ public class SpiceServiceListenerNotifier {
      * @param runnable a runnable to be posted immediatly on the queue.
      */
     protected void post(Runnable runnable) {
-        Ln.d("Message queue is " + messageQueue);
+        Ln.d("Message queue is %s", messageQueue);
 
         if (messageQueue == null) {
             return;

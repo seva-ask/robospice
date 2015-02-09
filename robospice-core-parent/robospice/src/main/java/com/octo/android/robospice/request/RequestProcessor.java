@@ -56,11 +56,11 @@ public class RequestProcessor {
     // ============================================================================================
     public void addRequest(final CachedSpiceRequest<?> request, final Set<RequestListener<?>> listRequestListener) {
         if (isStopped) {
-            Ln.d("Dropping request : " + request + " as processor is stopped.");
+            Ln.d("Dropping request : %s as processor is stopped.", request);
             return;
         }
 
-        Ln.d("Adding request to queue " + hashCode() + ": " + request + " size is " + mapRequestToRequestListener.size());
+        Ln.d("Adding request to queue %s: %s size is %s", hashCode(), request, mapRequestToRequestListener.size());
 
         if (request.isCancelled()) {
             synchronized (mapRequestToRequestListener) {

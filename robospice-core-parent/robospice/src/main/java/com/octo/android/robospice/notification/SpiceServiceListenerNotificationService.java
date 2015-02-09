@@ -78,7 +78,7 @@ public abstract class SpiceServiceListenerNotificationService extends Service {
         if (foreground) {
             startForeground(notificationId, onCreateForegroundNotification());
         }
-        Ln.d(getClass().getSimpleName() + " started.");
+        Ln.d("%s started.", getClass().getSimpleName());
     }
 
     @Override

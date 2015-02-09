@@ -119,7 +119,7 @@ public class RequestProgressManager {
     }
 
     public void notifyListenersOfRequestCancellation(final CachedSpiceRequest<?> request) {
-        Ln.d("Not calling network request : " + request + " as it is cancelled. ");
+        Ln.d("Not calling network request : %s as it is cancelled. ", request);
         final Set<RequestListener<?>> listeners = mapRequestToRequestListener.get(request);
         notifyListenersOfRequestProgress(request, listeners, RequestStatus.COMPLETE);
 
@@ -144,7 +144,7 @@ public class RequestProgressManager {
         requestListenerNotifier.clearNotificationsForRequest(request, setRequestListener);
 
         if (setRequestListener != null && listRequestListener != null) {
-            Ln.d("Removing listeners of request : " + request.toString() + " : " + setRequestListener.size());
+            Ln.d("Removing listeners of request : %s : %s", request.toString(), setRequestListener.size());
             setRequestListener.removeAll(listRequestListener);
         }
     }

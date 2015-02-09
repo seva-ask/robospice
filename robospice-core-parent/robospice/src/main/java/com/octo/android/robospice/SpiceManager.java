@@ -279,11 +279,11 @@ public class SpiceManager implements Runnable {
         try {
             if (spiceRequest != null && spiceService != null) {
                 if (isStopped) {
-                    Ln.d("Sending request to service without listeners : " + spiceRequest.getClass().getSimpleName());
+                    Ln.d("Sending request to service without listeners : %s", spiceRequest.getClass().getSimpleName());
                     spiceService.addRequest(spiceRequest, null);
                 } else {
                     final Set<RequestListener<?>> listRequestListener = mapRequestToLaunchToRequestListener.get(spiceRequest);
-                    Ln.d("Sending request to service : " + spiceRequest.getClass().getSimpleName());
+                    Ln.d("Sending request to service : %s", spiceRequest.getClass().getSimpleName());
                     spiceService.addRequest(spiceRequest, listRequestListener);
                 }
             } else {
@@ -757,7 +757,7 @@ public class SpiceManager implements Runnable {
                     for (final CachedSpiceRequest<?> cachedSpiceRequest : mapRequestToLaunchToRequestListener.keySet()) {
                         final Set<RequestListener<?>> setRequestListeners = mapRequestToLaunchToRequestListener.get(cachedSpiceRequest);
                         if (setRequestListeners != null) {
-                            Ln.d("Removing listeners of request to launch : " + cachedSpiceRequest.toString() + " : " + setRequestListeners.size());
+                            Ln.d("Removing listeners of request to launch : %s : %s", cachedSpiceRequest.toString(), setRequestListeners.size());
                             spiceService.dontNotifyRequestListenersForRequest(cachedSpiceRequest, setRequestListeners);
                         }
                     }
@@ -786,7 +786,7 @@ public class SpiceManager implements Runnable {
 
                     final Set<RequestListener<?>> setRequestListeners = mapPendingRequestToRequestListener.get(cachedSpiceRequest);
                     if (setRequestListeners != null) {
-                        Ln.d("Removing listeners of pending request : " + cachedSpiceRequest.toString() + " : " + setRequestListeners.size());
+                        Ln.d("Removing listeners of pending request : %s : %s", cachedSpiceRequest.toString(), setRequestListeners.size());
                         spiceService.dontNotifyRequestListenersForRequest(cachedSpiceRequest, setRequestListeners);
                     }
                 }
@@ -1085,7 +1085,7 @@ public class SpiceManager implements Runnable {
                 if (service instanceof SpiceServiceBinder) {
                     spiceService = ((SpiceServiceBinder) service).getSpiceService();
                     spiceService.addSpiceServiceListener(removerSpiceServiceListener);
-                    Ln.d("Bound to service : " + spiceService.getClass().getSimpleName());
+                    Ln.d("Bound to service : %s", spiceService.getClass().getSimpleName());
                     conditionServiceBound.signalAll();
                 } else {
                     Ln.e("Unexpected IBinder service at onServiceConnected :%s ", service.getClass().getName());
@@ -1101,7 +1101,7 @@ public class SpiceManager implements Runnable {
             lockAcquireService.lock();
             try {
                 if (spiceService != null) {
-                    Ln.d("Unbound from service start : " + spiceService.getClass().getSimpleName());
+                    Ln.d("Unbound from service start : %s", spiceService.getClass().getSimpleName());
                     spiceService = null;
                     isUnbinding = false;
                     conditionServiceUnbound.signalAll();
@@ -1200,8 +1200,8 @@ public class SpiceManager implements Runnable {
         } catch (Exception t) {
             // this should not happen in apps, but can happen during tests.
             Ln.d(t, "Binding to service failed.");
-            Ln.d("Context is" + context);
-            Ln.d("ApplicationContext is " + context.getApplicationContext());
+            Ln.d("Context is %s", context);
+            Ln.d("ApplicationContext is %s", context.getApplicationContext());
         } finally {
             lockSendRequestsToService.unlock();
             lockAcquireService.unlock();
@@ -1224,7 +1224,7 @@ public class SpiceManager implements Runnable {
                 spiceService.removeSpiceServiceListener(removerSpiceServiceListener);
                 Ln.v("Unbinding from service.");
                 context.getApplicationContext().unbindService(this.spiceServiceConnection);
-                Ln.d("Unbound from service : " + spiceService.getClass().getSimpleName());
+                Ln.d("Unbound from service : %s", spiceService.getClass().getSimpleName());
                 spiceService = null;
                 isUnbinding = false;
             }

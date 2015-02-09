@@ -26,7 +26,7 @@ public class SimpleTextRequest extends SpiceRequest<String> {
     @Override
     public String loadDataFromNetwork() throws Exception {
         try {
-            Ln.d("Call web service " + url);
+            Ln.d("Call web service %s", url);
             return IOUtils.toString(new InputStreamReader(new URL(url).openStream(), CharEncoding.UTF_8));
         } catch (final MalformedURLException e) {
             Ln.e(e, "Unable to create URL");
