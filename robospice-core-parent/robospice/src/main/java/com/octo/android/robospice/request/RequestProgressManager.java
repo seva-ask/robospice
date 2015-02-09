@@ -119,7 +119,7 @@ public class RequestProgressManager {
     }
 
     public void notifyListenersOfRequestCancellation(final CachedSpiceRequest<?> request) {
-        Ln.d("Not calling network request : %s as it is cancelled. ", request);
+        Ln.d("Not calling network request : %s as it is cancelled.", request);
         final Set<RequestListener<?>> listeners = mapRequestToRequestListener.get(request);
         notifyListenersOfRequestProgress(request, listeners, RequestStatus.COMPLETE);
 
