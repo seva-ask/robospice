@@ -57,7 +57,7 @@ public class InDatabaseObjectPersister<T, ID> extends ObjectPersister<T> {
         try {
             TableUtils.createTableIfNotExists(databaseHelper.getConnectionSource(), modelObjectType);
         } catch (SQLException e1) {
-            Ln.e(e1, "SQL Error while creating table for " + modelObjectType);
+            Ln.e(e1, "SQL Error while creating table for %s", modelObjectType);
         }
 
         try {

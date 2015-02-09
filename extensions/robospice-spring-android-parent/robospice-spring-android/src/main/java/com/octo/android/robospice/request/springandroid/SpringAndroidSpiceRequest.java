@@ -32,7 +32,7 @@ public abstract class SpringAndroidSpiceRequest<RESULT> extends SpiceRequest<RES
      */
     public void cancel() {
         super.cancel();
-        Ln.w(SpringAndroidSpiceRequest.class.getName(), "Cancel can't be invoked directly on "
-            + SpringAndroidSpiceRequest.class.getName() + " requests. You must call SpiceManager.cancelAllRequests().");
+        Ln.w("%s Cancel can't be invoked directly on %s requests. You must call SpiceManager.cancelAllRequests().",
+                SpringAndroidSpiceRequest.class.getName(), SpringAndroidSpiceRequest.class.getName());
     }
 }

@@ -56,7 +56,7 @@ public class DoubleInMemoryPersisterStub extends ObjectPersister<Double> {
 
     @Override
     public boolean removeDataFromCache(Object cacheKey) {
-        Ln.d("Clearing cache at" + cacheKey);
+        Ln.d("Clearing cache at %s", cacheKey);
         map.remove(cacheKey);
         return true;
     }

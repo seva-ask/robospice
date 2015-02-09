@@ -209,7 +209,7 @@ public abstract class BaseSpiceArrayAdapter<T> extends ArrayAdapter<T> {
 
         @Override
         public final void onRequestFailure(final SpiceException spiceException) {
-            Ln.e(SpiceListItemView.class.getName(), "Unable to retrive image", spiceException);
+            Ln.e(spiceException, "%s Unable to retrive image", SpiceListItemView.class.getName());
             thumbImageView.setImageDrawable(defaultDrawable);
         }
 
@@ -297,7 +297,7 @@ public abstract class BaseSpiceArrayAdapter<T> extends ArrayAdapter<T> {
 
                 File tempThumbnailImageFile = bitmapRequest.getCacheFile();
                 tempThumbnailImageFileName = tempThumbnailImageFile.getAbsolutePath();
-                Ln.d("Filename : " + tempThumbnailImageFileName);
+                Ln.d("Filename : %s", tempThumbnailImageFileName);
 
                 if (!tempThumbnailImageFile.exists()) {
                     if (isNetworkFetchingAllowed) {

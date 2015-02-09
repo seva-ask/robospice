@@ -24,7 +24,7 @@ public class OkHttpSimpleTextRequest extends OkHttpSpiceRequest<String> {
     @Override
     public String loadDataFromNetwork() throws Exception {
         try {
-            Ln.d("Call web service " + url);
+            Ln.d("Call web service %s", url);
             OkUrlFactory urlFactory = new OkUrlFactory(getOkHttpClient());
             HttpURLConnection connection = urlFactory.open(new URL(url));
             return IOUtils.toString(connection.getInputStream());

@@ -47,7 +47,7 @@ public class InDatabaseObjectPersisterFactory extends ObjectPersisterFactory {
         try {
             TableUtils.createTableIfNotExists(databaseHelper.getConnectionSource(), clazz);
         } catch (SQLException e) {
-            Ln.e(e, "RoboSpice", "Could not create cache entry table");
+            Ln.e(e, "RoboSpice Could not create cache entry table");
         }
     }
 
