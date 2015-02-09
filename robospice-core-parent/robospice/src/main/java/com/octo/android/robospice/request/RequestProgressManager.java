@@ -100,7 +100,7 @@ public class RequestProgressManager {
         requestListenerNotifier.notifyListenersOfRequestSuccess(request, result, listeners);
     }
 
-    public <T> void notifyListenersOfRequestSuccess(final CachedSpiceRequest<T> request, final T result) {
+    public synchronized  <T> void notifyListenersOfRequestSuccess(final CachedSpiceRequest<T> request, final T result) {
         final Set<RequestListener<?>> listeners = mapRequestToRequestListener.get(request);
         notifyListenersOfRequestProgress(request, listeners, RequestStatus.COMPLETE);
 
@@ -109,7 +109,7 @@ public class RequestProgressManager {
         notifyOfRequestProcessed(request, listeners);
     }
 
-    public <T> void notifyListenersOfRequestFailure(final CachedSpiceRequest<T> request, final SpiceException e) {
+    public synchronized <T> void notifyListenersOfRequestFailure(final CachedSpiceRequest<T> request, final SpiceException e) {
         final Set<RequestListener<?>> listeners = mapRequestToRequestListener.get(request);
         notifyListenersOfRequestProgress(request, listeners, RequestStatus.COMPLETE);
 
@@ -118,7 +118,7 @@ public class RequestProgressManager {
         notifyOfRequestProcessed(request, listeners);
     }
 
-    public void notifyListenersOfRequestCancellation(final CachedSpiceRequest<?> request) {
+    public synchronized void notifyListenersOfRequestCancellation(final CachedSpiceRequest<?> request) {
         Ln.d("Not calling network request : " + request + " as it is cancelled. ");
         final Set<RequestListener<?>> listeners = mapRequestToRequestListener.get(request);
         notifyListenersOfRequestProgress(request, listeners, RequestStatus.COMPLETE);
