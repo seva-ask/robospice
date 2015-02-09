@@ -480,7 +480,7 @@ public abstract class SpiceService extends Service {
     }
 
     public void dumpState() {
-        Ln.v(requestProcessor.toString());
+        Ln.v(requestProcessor);
     }
 
     public void addSpiceServiceListener(final SpiceServiceListener spiceServiceListener) {
@@ -492,7 +492,7 @@ public abstract class SpiceService extends Service {
     }
 
     private void stopIfNotBoundAndHasNoPendingRequests() {
-        Ln.v("Pending requests : " + currentPendingRequestCount);
+        Ln.v("Pending requests : %s", currentPendingRequestCount);
         if (currentPendingRequestCount == 0 && !isBound) {
             stopSelf();
         }
@@ -503,7 +503,7 @@ public abstract class SpiceService extends Service {
         if (notification == null || isJUnit) {
             return;
         }
-        Ln.v("Pending requests : " + currentPendingRequestCount);
+        Ln.v("Pending requests : %s", currentPendingRequestCount);
         if (isBound || currentPendingRequestCount == 0) {
             Ln.v("Stop foreground");
             stopForeground(true);

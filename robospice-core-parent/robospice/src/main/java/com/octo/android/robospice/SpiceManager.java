@@ -663,7 +663,7 @@ public class SpiceManager implements Runnable {
         try {
 
             final boolean requestNotPassedToServiceYet = removeListenersOfCachedRequestToLaunch(request);
-            Ln.v("Removed from requests to launch list : " + requestNotPassedToServiceYet);
+            Ln.v("Removed from requests to launch list : %s", requestNotPassedToServiceYet);
 
             // if the request was already passed to service, bind to
             // service and

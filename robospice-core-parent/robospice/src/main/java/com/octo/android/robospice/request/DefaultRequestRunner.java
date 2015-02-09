@@ -151,7 +151,7 @@ public class DefaultRequestRunner implements RequestRunner {
             Ln.d("Network request call ended.");
         } catch (final Exception e) {
             if (!request.isCancelled()) {
-                Ln.e(e, "An exception occurred during request network execution :" + e.getMessage());
+                Ln.e(e, "An exception occurred during request network execution : %s", e.getMessage());
                 handleRetry(request, new NetworkException("Exception occurred during invocation of web service.", e));
             } else {
                 Ln.e("An exception occurred during request network execution but request was cancelled, so listeners are not called.");
@@ -277,7 +277,7 @@ public class DefaultRequestRunner implements RequestRunner {
                             Thread.sleep(request.getRetryPolicy().getDelayBeforeRetry());
                             executeRequest(request);
                         } catch (InterruptedException e) {
-                            Ln.e(e, "Retry attempt failed for request " + request);
+                            Ln.e(e, "Retry attempt failed for request %s", request);
                         }
                     }
                 }).start();

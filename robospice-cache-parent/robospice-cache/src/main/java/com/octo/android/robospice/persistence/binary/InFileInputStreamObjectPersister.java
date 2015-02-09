@@ -36,7 +36,7 @@ public class InFileInputStreamObjectPersister extends InFileObjectPersister<Inpu
             // Should not occur (we test before if
             // file exists)
             // Do not throw, file is not cached
-            Ln.w("file " + file.getAbsolutePath() + " does not exists", e);
+            Ln.w(e, "file %s does not exists", file.getAbsolutePath());
             return null;
         }
     }
@@ -60,7 +60,7 @@ public class InFileInputStreamObjectPersister extends InFileObjectPersister<Inpu
                         try {
                             FileUtils.writeByteArrayToFile(getCacheFile(cacheKey), byteArray);
                         } catch (IOException e) {
-                            Ln.e(e, "An error occured on saving request " + cacheKey + " data asynchronously");
+                            Ln.e(e, "An error occured on saving request %s data asynchronously", cacheKey);
                         }
                     };
                 };

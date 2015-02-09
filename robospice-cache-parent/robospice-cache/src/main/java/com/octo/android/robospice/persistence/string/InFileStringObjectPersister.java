@@ -34,7 +34,7 @@ public class InFileStringObjectPersister extends InFileObjectPersister<String> {
             // Should not occur (we test before if
             // file exists)
             // Do not throw, file is not cached
-            Ln.w("file " + file.getAbsolutePath() + " does not exists", e);
+            Ln.w(e, "file %s does not exists", file.getAbsolutePath());
             return null;
         } catch (Exception e) {
             throw new CacheLoadingException(e);
@@ -43,7 +43,7 @@ public class InFileStringObjectPersister extends InFileObjectPersister<String> {
 
     @Override
     public String saveDataToCacheAndReturnData(final String data, final Object cacheKey) throws CacheSavingException {
-        Ln.v("Saving String " + data + " into cacheKey = " + cacheKey);
+        Ln.v("Saving String %s into cacheKey = %s", data, cacheKey);
         try {
             if (isAsyncSaveEnabled()) {
 
@@ -53,7 +53,7 @@ public class InFileStringObjectPersister extends InFileObjectPersister<String> {
                         try {
                             FileUtils.writeStringToFile(getCacheFile(cacheKey), data, CharEncoding.UTF_8);
                         } catch (IOException e) {
-                            Ln.e(e, "An error occured on saving request " + cacheKey + " data asynchronously");
+                            Ln.e(e, "An error occured on saving request %s data asynchronously", cacheKey);
                         }
                     };
                 };

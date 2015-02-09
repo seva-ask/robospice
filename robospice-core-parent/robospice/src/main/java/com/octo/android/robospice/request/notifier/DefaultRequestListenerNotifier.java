@@ -100,7 +100,7 @@ public class DefaultRequestListenerNotifier implements RequestListenerNotifier {
                 return;
             }
 
-            Ln.v("Notifying " + listeners.size() + " listeners of request not found");
+            Ln.v("Notifying %s listeners of request not found", listeners.size());
             synchronized (listeners) {
                 for (final RequestListener<?> listener : listeners) {
                     if (listener != null && listener instanceof PendingRequestListener) {
@@ -128,7 +128,7 @@ public class DefaultRequestListenerNotifier implements RequestListenerNotifier {
                 return;
             }
 
-            Ln.v("Notifying " + listeners.size() + " listeners of progress " + progress);
+            Ln.v("Notifying %s listeners of progress %s", listeners.size(), progress);
             synchronized (listeners) {
                 for (final RequestListener<?> listener : listeners) {
                     if (listener != null && listener instanceof RequestProgressListener) {
@@ -163,7 +163,7 @@ public class DefaultRequestListenerNotifier implements RequestListenerNotifier {
             }
 
             final String resultMsg = spiceException == null ? "success" : "failure";
-            Ln.v("Notifying " + listeners.size() + " listeners of request " + resultMsg);
+            Ln.v("Notifying %s listeners of request %s", listeners.size(), resultMsg);
             synchronized (listeners) {
                 for (final RequestListener<?> listener : listeners) {
                     if (listener != null) {
